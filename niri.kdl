@@ -12,6 +12,7 @@ input {
         scroll-method "two-finger"
     }
 
+    focus-follows-mouse
     warp-mouse-to-focus
     mouse
 }
@@ -72,22 +73,24 @@ hotkey-overlay {
 // Preferences
 // ====================
 prefer-no-csd
-screenshot-path "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png"
+screenshot-path "/home/gallahard/Gambar/Screenshots/screenshot_%H-%M-%S_%Y-%m-%d.jpg"
 
 // ====================
 // Animations
 // ====================
 animations {
+    slowdown 1.8
+
     workspace-switch {
-        spring damping-ratio=0.9 stiffness=800 epsilon=0.0001
+        duration-ms 350
     }
 
     horizontal-view-movement {
-        spring damping-ratio=0.9 stiffness=800 epsilon=0.0001
+        duration-ms 350
     }
 
     window-open {
-        duration-ms 200
+        duration-ms 150
         curve "linear"
 
         custom-shader r"
@@ -115,7 +118,7 @@ animations {
     }
 
     window-close {
-        duration-ms 300
+        duration-ms 150
         curve "linear"
 
         custom-shader r"
@@ -157,6 +160,17 @@ window-rule {
     open-floating true
 }
 
+// Transparent & blur for non-focused window
+window-rule {
+    match is-active=false
+    opacity 0.92 
+    background-effect {
+        blur true
+        saturation 0.8
+        noise 0.03
+    }
+}
+
 // ====================
 // Geometry
 // ====================
@@ -182,6 +196,7 @@ binds {
     Mod+Alt+Space hotkey-overlay-title="Quick Command Launcher" { spawn-sh "qs -c noctalia-shell ipc call launcher command"; }
     Mod+T hotkey-overlay-title="Open a Terminal: kitty" { spawn "kitty"; }
     Mod+R hotkey-overlay-title="Run an Application: tofi" { spawn-sh "sh -c '$(which $(tofi-drun))'"; }
+    SUPER+B hotkey-overlay-title="Launch Zen Browser" { spawn "/usr/bin/zen-browser"; }
     SUPER+Alt+w hotkey-overlay-title="Launch wallpaper selector" { spawn-sh "qs -c noctalia-shell ipc call wallpaper toggle"; }
 
     // System Controls
@@ -189,6 +204,7 @@ binds {
     Mod+S hotkey-overlay-title="Toggle Control Center" { spawn-sh "qs -c noctalia-shell ipc call controlCenter toggle"; }
     Mod+Shift+S hotkey-overlay-title="Toggle Settings" { spawn-sh "qs -c noctalia-shell ipc call settings toggle"; }
     Mod+L hotkey-overlay-title="Noctalia Lock Screen" { spawn-sh "qs -c noctalia-shell ipc call lockScreen lock"; }
+    Mod+Shift+N hotkey-overlay-title="Show notification history" { spawn-sh "qs -c noctalia-shell ipc call notifications toggleHistory"; }
     Super+Alt+S allow-when-locked=true hotkey-overlay-title="Toggle Screen Reader" { spawn-sh "pkill orca || exec orca"; }
 
     // -- Audio --
@@ -240,6 +256,7 @@ binds {
     Mod+Ctrl+R hotkey-overlay-title="Reset Window Height" { reset-window-height; }
 
     // -- Layout --
+    Mod+Alt+R { switch-preset-column-width; }
     Mod+F hotkey-overlay-title="Maximize Column" { maximize-column; }
     Mod+Shift+F hotkey-overlay-title="Fullscreen Window" { fullscreen-window; }
     Mod+Ctrl+F hotkey-overlay-title="Expand Column to Available Width" { expand-column-to-available-width; }
@@ -337,9 +354,8 @@ binds {
     // Miscellaneous
     Mod+Escape hotkey-overlay-title="Toggle Keyboard Shortcuts Inhibit" allow-inhibiting=false { toggle-keyboard-shortcuts-inhibit; }
     Mod+Shift+E hotkey-overlay-title="Quit Niri" { quit; }
-    Ctrl+Alt+Delete hotkey-overlay-title="Quit Niri" { quit; }
+    Ctrl+Alt+Delete hotkey-overlay-title="Show session options" { spawn-sh "qs -c noctalia-shell ipc call sessionMenu toggle"; }
     Mod+Shift+P hotkey-overlay-title="Power Off Monitors" { power-off-monitors; }
-    Mod+Alt+R { switch-preset-column-width; }
 }
 
 // ====================
